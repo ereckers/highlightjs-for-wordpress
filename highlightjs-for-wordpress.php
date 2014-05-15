@@ -16,7 +16,7 @@ License: GPL2
 
 	Copyright (c) 2014 Ed Reckers. (email : ed@redbridgenet.com)
 
-	This theme, like WordPress, is licensed under the GPL.
+	This plugin, like WordPress, is licensed under the GPL.
 	Use it to make something cool, have fun, and share what you've learned with others.
 */
 
@@ -37,7 +37,7 @@ class HighlightJSForWordPress {
 	 * Initialization, Hooks, and localization
 	 */
 	function init() {
-	    //require_once( 'options-page.php' );
+		require_once( 'settings.php' );
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'highlightjs_fwp_enqueue_scripts' ) );
 		add_action( 'wp_head', array( $this, 'highlightjs_fwp_insert_script' ) );
@@ -50,7 +50,13 @@ class HighlightJSForWordPress {
 	function highlightjs_fwp_enqueue_scripts() {
 
 		// allow custom css selection
-		$selected_style = "atelier-dune.dark.css";
+		$options = get_option('my_option_name');
+
+		if ( $options['color_scheme'] != "" ) {
+			$selected_style = $options['color_scheme'];
+		} else {
+			$selected_style = "default.css";
+		}
 
 		wp_enqueue_style(
 			'highlightjs',
@@ -66,7 +72,6 @@ class HighlightJSForWordPress {
 			'true'
 		);
 	}
-	//add_action( 'wp_enqueue_scripts', 'highlightjs_fwp_enqueue_scripts' );
 
 	/**
 	 * Hook highlight.js highlighting to the page load event 
@@ -74,17 +79,15 @@ class HighlightJSForWordPress {
 	function highlightjs_fwp_insert_script() {
 
 		// allow custom selector option
-		// TODO: make sure this is escaped (we're injecting something into javascript
-		$custom_selector = "pre";
+		$options = get_option('my_option_name');
 
-		if ( $custom_selector != "" ) { 
+		if ( $options['custom_selector'] != "" ) { 
 			include_once( plugin_dir_path( __FILE__ ) . "/templates/initialize-custom.php" );
 		} else {
 			include_once( plugin_dir_path( __FILE__ ) . "/templates/initialize.php" );
 		}
 
 	}
-	//add_action( 'wp_head', 'highlightjs_fwp_insert_script' );
 
 }
 
