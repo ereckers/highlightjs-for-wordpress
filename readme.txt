@@ -1,7 +1,7 @@
 === highlight.js for WordPress ===
 Contributors: ereckers
 Donate link: http://www.redbridgenet.com/make-payment/
-Tags: highlight.js, code highligting, highlighting
+Tags: highlight.js, syntax highlighting, code highlighting, highlighting, highlight
 Requires at least: 3.9.1
 Tested up to: 3.9.1
 Stable tag: 1.0.0
