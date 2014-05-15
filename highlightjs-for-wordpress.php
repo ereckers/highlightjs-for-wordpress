@@ -25,6 +25,8 @@ License: GPL2
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
+define('PLUGIN_DIR_PATH', plugin_dir_path(__FILE__));
+
 /**
  * Enqueue highlight.js Script and Style site-wide.
  */
@@ -57,16 +59,12 @@ function highlightjs_fwp_insert_script() {
 	// allow custom selector option
 	$custom_selector = "pre";
 
-	// break out to print script
-	if ( $custom_selector != "" ) { ?>
-<script>
-$(document).ready(function() {
-	$('<?php echo $custom_selector; ?>').each(function(i, e) {hljs.highlightBlock(e)});
-});
-</script>
-	<?php } else { ?>
-<script>hljs.initHighlightingOnLoad();</script>
-	<?php }
+	if ( $custom_selector != "" ) { 
+		include_once( PLUGIN_DIR_PATH . "/templates/initialize-custom.php" );
+	} else {
+		include_once( PLUGIN_DIR_PATH . "/templates/initialize.php" );
+	}
+
 }
 add_action( 'wp_head', 'highlightjs_fwp_insert_script' );
 
