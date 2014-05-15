@@ -4,7 +4,7 @@ Donate link: http://www.redbridgenet.com/make-payment/
 Tags: highlight.js, syntax highlighting, code highlighting, highlighting, highlight
 Requires at least: 3.9.1
 Tested up to: 3.9.1
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 
 highlight.js as a WordPress plugin.
 
@@ -34,6 +34,11 @@ Wanted the simplest include for hightlight.js that I could find. You could easil
 Useful to me. May be useful to others.
 
 == Changelog ==
+
+= 1.0.0 =
+
+* Options settings
+* Uninstall script
 
 = 1.0.0 =
 

@@ -10,7 +10,7 @@ License: GPL2
 
 ----------------------------------------------------------------------------
 
-Thanks to highlightjs.org and its authors:
+Thanks to highlightjs.org and its authors
 : https://github.com/isagalaev/highlight.js/blob/master/AUTHORS.en.txt
 
 ----------------------------------------------------------------------------
