@@ -10,14 +10,15 @@ License: GPL2
 
 ----------------------------------------------------------------------------
 
-	Thanks to highlightjs.org
+Thanks to the authors of highlight.js:
+https://github.com/isagalaev/highlight.js/blob/master/AUTHORS.en.txt
 
 ----------------------------------------------------------------------------
 
-	Copyright (c) 2014 Ed Reckers. (email : ed@redbridgenet.com)
+Copyright (c) 2014 Ed Reckers. (email : ed@redbridgenet.com)
 
-	This plugin, like WordPress, is licensed under the GPL.
-	Use it to make something cool, have fun, and share what you've learned with others.
+This plugin, like WordPress, is licensed under the GPL.
+Use it to make something cool, have fun, and share what you've learned with others.
 */
 
 class HighlightJSForWordPress {
@@ -37,11 +38,27 @@ class HighlightJSForWordPress {
 	 * Initialization, Hooks, and localization
 	 */
 	function init() {
-		require_once( 'settings.php' );
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'highlightjs_fwp_enqueue_scripts' ) );
 		add_action( 'wp_head', array( $this, 'highlightjs_fwp_insert_script' ) );
 
+		self::settings();
+
+	}
+
+	/**
+	 * Setup the plugin WP settings and options
+	 */
+	function settings() {
+        // Create array of default settings
+        $this->defaultsettings = array(
+            'color_scheme'    => 'default.css',
+            'custom_selector' => 'pre'
+        );
+
+        // Create the settings array by merging the user's settings and the defaults
+        $usersettings = (array) get_option('highlightjs_fwp_settings');
+        $this->settings = wp_parse_args( $usersettings, $this->defaultsettings );
 	}
 
 	/**
@@ -49,18 +66,9 @@ class HighlightJSForWordPress {
 	 */
 	function highlightjs_fwp_enqueue_scripts() {
 
-		// allow custom css selection
-		$options = get_option('my_option_name');
-
-		if ( $options['color_scheme'] != "" ) {
-			$selected_style = $options['color_scheme'];
-		} else {
-			$selected_style = "default.css";
-		}
-
 		wp_enqueue_style(
 			'highlightjs',
-			plugins_url( '/highlight/styles/'.$selected_style , __FILE__ ),
+			plugins_url( '/highlight/styles/'.$this->settings['color_scheme'], __FILE__ ),
 			array(),
 			'1.0.0'
 		);
@@ -77,20 +85,22 @@ class HighlightJSForWordPress {
 	 * Hook highlight.js highlighting to the page load event 
 	 */
 	function highlightjs_fwp_insert_script() {
-
-		// allow custom selector option
-		$options = get_option('my_option_name');
-
-		if ( $options['custom_selector'] != "" ) { 
+		if ( $this->settings['custom_selector'] != "" ) { 
 			include_once( plugin_dir_path( __FILE__ ) . "/templates/initialize-custom.php" );
 		} else {
 			include_once( plugin_dir_path( __FILE__ ) . "/templates/initialize.php" );
 		}
-
 	}
 
 }
 
 $highlightjs_for_wordpress = new HighlightJSForWordPress;
+
+/*
+ * Load WordPress options Setting screen
+ */
+if ( is_admin() ) {
+    require_once( 'settings.php' );
+}
 
 ?>

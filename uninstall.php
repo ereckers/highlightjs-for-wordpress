@@ -10,16 +10,14 @@
 if ( !defined( 'WP_UNINSTALL_PLUGIN' ) ) 
     exit();
 
-$option_name = 'plugin_option_name';
+$option_name = 'highlightjs_fwp_settings';
 
 // For Single site
-if ( !is_multisite() ) 
-{
+if ( !is_multisite() ) {
     delete_option( $option_name );
 } 
 // For Multisite
-else 
-{
+else {
     // For regular options.
     global $wpdb;
     $blog_ids = $wpdb->get_col( "SELECT blog_id FROM $wpdb->blogs" );

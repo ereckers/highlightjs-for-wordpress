@@ -2,7 +2,7 @@
 /*
  * Setup and processes WordPress Administrative Settings screen for plugin
  */
-class HighlightJSForWordPressSettings {
+class HighlightJSForWordPressSettings extends HighlightJSForWordPress {
 	/**
 	 * Holds the values to be used in the fields callbacks
 	 */
@@ -34,9 +34,13 @@ class HighlightJSForWordPressSettings {
 	 * Options page callback
 	 */
 	public function create_admin_page() {
+
+		// Defer to parent Class to set the initional options
+		parent::settings();
+		$this->options = $this->settings;
+
 		// Set class property
-		// TODO: understand if this contains all options as array
-		$this->options = get_option( 'my_option_name' );
+		//$this->options = get_option( 'highlightjs_fwp_settings' );
 ?>
 		<div class="wrap">
 			<h2>highlight.js for WordPress Settings</h2>           
@@ -59,7 +63,7 @@ class HighlightJSForWordPressSettings {
 
 		register_setting(
 			'my_option_group', // Option group
-			'my_option_name', // Option name
+			'highlightjs_fwp_settings', // Option name
 			array( $this, 'sanitize' ) // Sanitize
 		);
 
@@ -69,24 +73,6 @@ class HighlightJSForWordPressSettings {
 			array( $this, 'print_section_info' ), // Callback
 			'my-setting-admin' // Page
 		);  
-
-		/*
-		add_settings_field(
-			'id_number', // ID
-			'ID Number', // Title 
-			array( $this, 'id_number_callback' ), // Callback
-			'my-setting-admin', // Page
-			'setting_section_id' // Section           
-		);      
-
-		add_settings_field(
-			'title', 
-			'Title', 
-			array( $this, 'title_callback' ), 
-			'my-setting-admin', 
-			'setting_section_id'
-		);      
-		 */
 
 		add_settings_field(
 			'custom_selector', 
@@ -107,19 +93,9 @@ class HighlightJSForWordPressSettings {
 
 	/**
 	 * Sanitize each setting field as needed
-	 *
-	 * @param array $input Contains all settings fields as array keys
 	 */
 	public function sanitize( $input ) {
 		$new_input = array();
-
-		/*
-		if( isset( $input['id_number'] ) )
-			$new_input['id_number'] = absint( $input['id_number'] );
-
-		if( isset( $input['title'] ) )
-			$new_input['title'] = sanitize_text_field( $input['title'] );
-		 */
 
 		if( isset( $input['custom_selector'] ) )
 			$new_input['custom_selector'] = sanitize_text_field( $input['custom_selector'] );
@@ -140,29 +116,10 @@ class HighlightJSForWordPressSettings {
 	/** 
 	 * Get the settings option array and print one of its values
 	 */
-	public function id_number_callback() {
-		printf(
-			'<input type="text" id="id_number" name="my_option_name[id_number]" value="%s" />',
-			isset( $this->options['id_number'] ) ? esc_attr( $this->options['id_number']) : ''
-		);
-	}
-
-	/** 
-	 * Get the settings option array and print one of its values
-	 */
-	public function title_callback() {
-		printf(
-			'<input type="text" id="title" name="my_option_name[title]" value="%s" />',
-			isset( $this->options['title'] ) ? esc_attr( $this->options['title']) : ''
-		);
-	}
-
-	/** 
-	 * Get the settings option array and print one of its values
-	 */
 	public function custom_selector_callback() {
 		printf(
-			'<input type="text" id="custom_selector" name="my_option_name[custom_selector]" value="%s" /><p class="description">If you use different markup for code blocks you can initialize them manually.</p>',
+			'<input type="text" id="custom_selector" name="highlightjs_fwp_settings[custom_selector]" value="%s" />
+			<p class="description">If you use different markup for code blocks you can initialize them manually.</p>',
 			isset( $this->options['custom_selector'] ) ? esc_attr( $this->options['custom_selector']) : ''
 		);
 	}
@@ -171,26 +128,17 @@ class HighlightJSForWordPressSettings {
 	 * Get the settings option array and print one of its values
 	 */
 	public function color_scheme_callback() {
-
-		// contains options building helpers
-		require_once( 'utils.php' );
-
-		print '<select name="my_option_name[color_scheme]" id="color_scheme">';
-		highlightjs_for_wordpress_get_style_list( $this->options['color_scheme'] );
-		print '</select>';
-
-		/*
 		printf(
-			'<input type="text" id="color_scheme" name="my_option_name[color_scheme]" value="%s" /><p class="description">If you use different markup for code blocks you can initialize them manually.</p>',
-			isset( $this->options['color_scheme'] ) ? esc_attr( $this->options['color_scheme']) : ''
+			'<select name="highlightjs_fwp_settings[color_scheme]" id="color_scheme">%s</select>',
+			highlightjs_fwp_get_style_list( $this->options['color_scheme'] )
 		);
-		 */
 	}
 
 }
 
 if ( is_admin() ) {
 	$highlightjs_for_wordpress_settings = new HighlightJSForWordPressSettings();
+	require_once( 'utils.php' );
 }
 
 ?>

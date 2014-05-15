@@ -2,23 +2,26 @@
 /**
  * Print Combobox With Styles for Settings
  */
-function highlightjs_for_wordpress_get_style_list($currentStyle) {
+function highlightjs_fwp_get_style_list( $style = "default.css" ) {
 
-    $styleDir = '..' . '/' . PLUGINDIR . '/' . dirname(plugin_basename(__FILE__)) . '/highlight/' . 'styles'; # dirty hack
+	$options = "";
+	//$style = "default.css";
 
-    if ($dir = opendir($styleDir))
-    {
-        while($file = readdir($dir))
-        {
-            if (($file == '.') or ($file == '..'))
-                continue;
+    //$styleDir = '..' . '/' . PLUGINDIR . '/' . dirname(plugin_basename(__FILE__)) . '/highlight/' . 'styles'; # dirty hack
 
-            if ($file != $currentStyle)
-                echo "<option value=" . $file . ">$file</option>";
-            else
-                echo "<option selected=\"selected\">$file</option>";
+    //if ( $dir = opendir( $styleDir ) ) {
+    if ( $dir = opendir( plugin_dir_path( __FILE__ ) . '/highlight/styles' ) ) {
+        while ( $file = readdir( $dir ) ) {
+            if ( ( $file == '.' ) or ( $file == '..' ) ) continue;
+
+            if ( $file != $style ) {
+                $options .= "<option value=" . $file . ">$file</option>";
+			} else {
+                $options .= "<option selected=\"selected\">$file</option>";
+			}
         }
     }
-    closedir($dir);
+    closedir( $dir );
+	return $options;
 }
 ?>
