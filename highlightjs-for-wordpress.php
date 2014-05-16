@@ -2,7 +2,7 @@
 /*
 Plugin Name: highlight.js for WordPress
 Plugin URI: https://github.com/ereckers/highlightjs-for-wordpress
-Description: highlight.js as a WordPress plugin.
+Description: <a href="http://highlightjs.org/">highlight.js</a> syntax highlighting for WordPress.
 Version: 1.0.1
 Author: Ed Reckers (Red Bridge Internet)
 Author URI: http://www.redbridgenet.com
@@ -63,7 +63,7 @@ class HighlightJSForWordPress {
 	 */
 	function highlightjs_fwp_enqueue_scripts() {
 		wp_enqueue_style( 'highlightjs', plugins_url( '/highlight/styles/'.$this->settings['color_scheme'], __FILE__ ), array(), '1.0.1' );
-		wp_register_script( 'highlightjs', plugins_url( '/highlight/highlight.pack.js' , __FILE__ ), array(), '1.0.1', 'true' );
+		wp_enqueue_script( 'highlightjs', plugins_url( '/highlight/highlight.pack.js' , __FILE__ ), array(), '1.0.1', 'true' );
 	}
 
 	/**
